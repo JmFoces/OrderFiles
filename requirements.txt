@@ -1,0 +1,7 @@
+filemagic
+sh
+hachoir-core
+hachoir-parse
+hachoir-metadata
+patool
+slugify
