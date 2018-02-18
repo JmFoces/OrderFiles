@@ -9,12 +9,12 @@ The project aims to solve this problem and classify all these files contained in
 
 ## Supported file types and containers
 Partition tables: msdos and gpt. I've just tested msdos parition tables but gpt should work too since the mapping is done by the OS.  
-LVMs: Tested
-RAIDs: Not supported by design, It does not look for all the volumes to re-assemble the raid.
-Filesystems: ext[2,3,4], FAT variants, NTFS
-Compressed: tar, gzip, rar, zip, 7z
-Directories ^^
-File types: all suppoted by libmagic. Type ``` file -l ``` 
+LVMs: Tested  
+RAIDs: Not supported by design, It does not look for all the volumes to re-assemble the raid.  
+Filesystems: ext[2,3,4], FAT variants, NTFS  
+Compressed: tar, gzip, rar, zip, 7z  
+Directories ^^  
+File types: all suppoted by libmagic. Type ``` file -l ```   
 
 ## UseCases
 Obviously: to order backups.
