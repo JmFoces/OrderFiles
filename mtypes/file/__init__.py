@@ -1,6 +1,6 @@
 import os
 import sh
-from constants import WORK_DIR
+from config import WORK_DIR
 from utils.log import log
 
 class File:
@@ -34,9 +34,9 @@ class File:
 
     def get_ordered_path(self):
         try:
-            ordered_folder = self.mime_type
+            ordered_folder = str(self.mime_type, 'utf8') if isinstance(self.mime_type, bytes) else self.mime_type
             ordered_folder = os.path.join(WORK_DIR, ordered_folder)
-        except AttributeError:
+        except (TypeError, AttributeError):
             ordered_folder = "NoMime"
             ordered_folder = os.path.join(WORK_DIR, ordered_folder)
         sh.mkdir("-p", ordered_folder)

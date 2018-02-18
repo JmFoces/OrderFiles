@@ -46,7 +46,7 @@ class FileSystem(Container):
     def set_fsattrs(self):
         log.debug("Getting filesystem attributes {0}".format(self.path))
         try:
-            me = json.loads(sh.lsblk("-pJ", "-o", self.LSBLK_KEYS, self.path).stdout)["blockdevices"][0]
+            me = json.loads(str(sh.lsblk("-pJ", "-o", self.LSBLK_KEYS, self.path).stdout,'utf8'))["blockdevices"][0]
             try:
                 self.uuid = me["uuid"]
                 log.debug("GOT UUID: {0}".format(self.uuid))
@@ -65,7 +65,7 @@ class FileSystem(Container):
 
         except sh.ErrorReturnCode_32:
             # Not a block device falling back to blkid
-            cmd = sh.blkid("-o", "export", self.path).stdout
+            cmd = str(sh.blkid("-o", "export", self.path).stdout,'utf8')
             try:
                 self.uuid = re.search("UUID=(.*)", cmd).group(1)
             except (TypeError, AttributeError):
@@ -89,14 +89,14 @@ class FileSystem(Container):
 
         try:
             sh.mount("-o", "{0},{1}".format(mode, self.MOUNT_OPTIONS), self.path, self.output_path)
-        except sh.ErrorReturnCode, e:
+        except sh.ErrorReturnCode as e:
             log.debug("Legacy re-mount opts for {0}".format(self)) 
             try:
                 sh.mount("-o", "{0}".format(mode), self.path, self.output_path)
             except:
                 try:
                     sh.mount(self.path, self.output_path)
-                except Exception,e :
+                except Exception as e :
                     log.error("Cannot mount : {0}".format(self))
                     log.exception(e)
                     status=False
@@ -106,7 +106,7 @@ class FileSystem(Container):
         try:
             self.create_output_path()
             sh.chmod("700", self.output_path)
-        except sh.ErrorReturnCode, e:
+        except sh.ErrorReturnCode as e:
             ## Already mounted readonly.
             pass
         try:
@@ -132,7 +132,7 @@ class FileSystem(Container):
                 return self.loaded
             else:
                 return False
-        except sh.ErrorReturnCode, e:
+        except sh.ErrorReturnCode as e:
             self.unload()
             log.exception(e)
             return False

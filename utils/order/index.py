@@ -1,13 +1,15 @@
 import sh
 import os
 import re
+
+import config
 import constants
 from utils.exceptions import *
 from utils.command import *
 
 
 class Index:
-    INDEX_PATH = constants.INDEX_PATH
+    INDEX_PATH = config.INDEX_PATH
     DEPTH = 2
 
     def __init__(self):
@@ -15,8 +17,8 @@ class Index:
         sh.mkdir("-p", self.tmp)
 
     def put_file(self, path):
-        temp_file = sh.mktemp("-p", self.tmp).stdout.strip()
-        path=path.strip()
+        temp_file = str(sh.mktemp("-p", self.tmp).stdout,'utf8').strip()
+        path = path.strip()
         if "'" in path:
             returncode, stdout, stderr = launch_command(
                 "dd if=\"{0}\" iflag=nofollow bs=4k | tee {1} | sha1sum".format(
@@ -32,10 +34,10 @@ class Index:
                 )
             )
         if returncode != 0:
-            print stdout
-            print stderr
+            print(stdout)
+            print(stderr)
             raise UnableToHashFile("File : {0}".format(path))
-        hash_str = re.search("^[0-9a-f]*", stdout).group(0)
+        hash_str = re.search("^[0-9a-f]*", str(stdout,'utf8')).group(0)
         destination_folder = self.create_destination_folder(hash_str)
         destination_path = os.path.join(destination_folder, hash_str)
         if not self.is_stored(hash_str):

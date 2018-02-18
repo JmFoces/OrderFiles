@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8
 import sys
 import os
@@ -6,22 +6,17 @@ from os import listdir
 from utils.log import log
 from mtypes.creators.file_factory import FileFactory
 from multiprocessing import Process
-from threading import Thread
-from constants import WORK_DIR
-
-
+from config import EXCLUDE_ROOT
 from utils.order.organizer import Organizer
-
-import time
-
-EXCLUDE_ROOT=[ "debian", "pypi" , "clamav", "linux-malware-detector", "roundcubemail", "hp" ,"debian_repo", "debian_security"]
-ROOT_CONCURRENCY = 4
+from hachoir.core import config
+config.quiet = True
 
 def work(path):
     ffactory = FileFactory()
     organizer = Organizer()
     mfile = ffactory.create_file(path)
     organizer.organize(mfile)
+
 
 if __name__ == "__main__":
     procs = []
@@ -36,7 +31,7 @@ if __name__ == "__main__":
                 else:
                     p = Process(target=work, args=[param])
                     procs.append(p)
-        except Exception,e:
+        except Exception as e:
             log.exception(e)
 
     for p in procs:

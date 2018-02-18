@@ -1,14 +1,15 @@
 import os
 import re
 from mtypes.file.container import Container
-from constants import SOURCEFOLDER_CONTENTS,PROJECTNAMES
+from constants import SOURCEFOLDER_CONTENTS
+from config import PROJECTNAMES
 from utils.log import log
 
 
 class Directory(Container):
 
     # Represents a directory container
-    def __init__(self, path, magic_str=None, mime_type=None, metadata=None,parent=None):
+    def __init__(self, path, magic_str=None, mime_type=None, metadata=None, parent=None):
         Container.__init__(self, path, magic_str, mime_type, metadata, parent)
         #log.debug("Created Directory Container File {0}".format(self.path))
 
@@ -27,7 +28,7 @@ class Directory(Container):
     def is_source_container(self):
         children = self.get_children()
         for projname in PROJECTNAMES:
-            if re.search("{0}".format(projname), os.path.basename(self.path),flags=re.IGNORECASE):
+            if re.search("{0}".format(projname), os.path.basename(self.path), flags=re.IGNORECASE):
                 try:
                     log.debug("{0} Is source Projname".format(self.path))
                 except UnicodeError:

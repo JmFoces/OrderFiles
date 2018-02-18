@@ -1,7 +1,4 @@
 filemagic
 sh
-hachoir-core
-hachoir-parse
-hachoir-metadata
+hachoir3
 patool
-slugify

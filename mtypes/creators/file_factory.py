@@ -1,9 +1,7 @@
+import hachoir
 import magic
 import sh
 import re
-from hachoir_core.cmd_line import unicodeFilename
-from hachoir_parser import createParser
-from hachoir_metadata import extractMetadata
 
 from utils.log import log
 from utils.exceptions import *
@@ -18,39 +16,32 @@ from mtypes.file.container.compressed import Compressed
 from mtypes.file.container.filesystem import FileSystem
 from mtypes.file.container.mapable_drive import MapableDrive
 from mtypes.file.pointer import Pointer
-
-from hachoir_core import config as HachoirConfig
-HachoirConfig.quiet = True
+from hachoir.parser import createParser
+from hachoir.metadata import extractMetadata
 
 def distinguish_dos_from_fs(path, magic_str=None, mime_type=None, metadata=None, parent=None):
     ## Must have the same header than File.__init__
-    cmd = sh.blkid("-o", "export", path).stdout
+    cmd = str(sh.blkid("-o", "export", path).stdout,'utf8')
     if re.search("\nTYPE=.*\n", cmd):
         return FileSystem(path, magic_str,parent)
     else:
         return MapableDrive(path, magic_str,parent)
 
 def get_metadata(full_name):
-    try:
-        filename, realname = unicodeFilename(full_name), full_name
-    except TypeError:
-        filename = full_name
-        realname = full_name
-
     metadata = None
     try:
-        parser = createParser(filename, realname)
+        parser = createParser(full_name)
         metadata = extractMetadata(parser)
-
         if parser:
             parser.stream._input.close()
             del parser
-        #if filename:
-        #    del filename
-        #if realname:
-        #    del realname
-    except Exception, e:
-        pass
+    except hachoir.stream.input.InputStreamError:
+        ## is directory
+        metadata = None
+    except Exception as err:
+        log.exception(err)
+        log.error("Cannot extract metadata")
+        metadata = None
     finally:
         return metadata
 
@@ -74,7 +65,7 @@ class FileFactory:
         "application/x-tar": Compressed,
         "application/x-rar": Compressed,
         "application/x-lzma": Compressed,
-        "application/x-7z-compressed":Compressed,
+        "application/x-7z-compressed": Compressed,
         "application/vnd.ms-opentype": Document,
         "application/vnd.ms-excel": Document,
         "application/vnd.ms-powerpoint": Document,
@@ -125,7 +116,7 @@ class FileFactory:
                     try:
                         file_obj = file_class(path, magic_str=magic_str, mime_type=mime_str, metadata=metadata, parent=parent)
                         break
-                    except Exception,e:
+                    except Exception as e:
                         log.exception(e)
                         pass
 

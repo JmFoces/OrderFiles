@@ -3,8 +3,7 @@ import sh
 import random
 from mtypes.file import File
 from utils.log import log
-from constants import WORK_DIR
-
+from config import WORK_DIR
 
 
 class Container(File):
@@ -38,14 +37,14 @@ class Container(File):
         else:
             path = self.output_path
         #log.debug("Getting children from path {0}".format(path))
-        return sh.find(path, "-maxdepth", "1", "!", "-name", "lost+found").stdout.split("\n")[1:-1]
+        return str(sh.find(path, "-maxdepth", "1", "!", "-name", "lost+found").stdout,'utf8').split("\n")[1:-1]
 
     def get_all_children(self, filter=()):
         if not self.output_path:
             path = self.path
         else:
             path = self.output_path
-        return sh.find(path, filter).stdout.split("\n")[1:-1]
+        return str(sh.find(path, filter).stdout,'utf8').split("\n")[1:-1]
 
 
 
@@ -56,7 +55,7 @@ class Container(File):
         if not self.output_path:
             sh.mkdir("-p",WORK_DIR)
             sh.chmod("700",WORK_DIR)
-            self.output_path = sh.mktemp("-p", WORK_DIR, "-d").stdout.split("\n")[0]
+            self.output_path = str(sh.mktemp("-p", WORK_DIR, "-d").stdout,'utf8').split("\n")[0]
             log.debug("Output path -> {0}".format(self.output_path))
             sh.chmod("700",self.output_path)
 

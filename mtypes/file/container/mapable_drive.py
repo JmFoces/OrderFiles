@@ -23,7 +23,7 @@ class MapableDrive(Container):
     def load(self):
         log.debug("loading mapable drive {0}".format(self.path))
         try:
-            if not re.search(r"block special", sh.file(self.path).stdout, flags=re.IGNORECASE):
+            if not re.search(r"block special", str(sh.file(self.path).stdout,'utf8'), flags=re.IGNORECASE):
                 self.lodev = sh.losetup("-f").split()[0]
                 sh.losetup(self.lodev, self.path)
                 sh.blkid(self.lodev)
@@ -39,7 +39,7 @@ class MapableDrive(Container):
                     pass
             sh.sync("/dev/")
             self.process_devicemap()
-        except Exception,e:
+        except Exception as e:
             log.exception(e)
             return False
         return True
@@ -65,7 +65,7 @@ class MapableDrive(Container):
             dev_path = self.lodev
         else:
             dev_path = self.path
-        root = json.loads(sh.lsblk("-pJ", "-o", self.LSBLK_KEYS, dev_path).stdout)["blockdevices"][0]
+        root = json.loads(str(sh.lsblk("-pJ", "-o", self.LSBLK_KEYS, dev_path).stdout,'utf8'))["blockdevices"][0]
         try:
             self.process_sub_devicemap(root["children"])
         except KeyError:
@@ -95,9 +95,4 @@ class MapableDrive(Container):
 
     def get_ordered_path(self):
         return Container.get_ordered_path(self)
-
-
-
-
-
 

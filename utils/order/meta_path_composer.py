@@ -2,7 +2,6 @@ import re
 import logging
 from datetime import datetime
 import os
-import slugify
 
 
 def get_author(metadata,  file_full_path):
@@ -11,24 +10,20 @@ def get_author(metadata,  file_full_path):
         text = metadata.exportPlaintext()
     except AttributeError:
         text = ""
+    text = str(text) if isinstance(text, list) else text
     if re.search(
-            u".*author.*", unicode(text), re.IGNORECASE
+            u".*author.*", text, re.IGNORECASE
     ):
         author = u"author_"
         try:
-            author += unicode(
-                metadata._Metadata__data["author"].values[0].value)
+            author += metadata._Metadata__data["author"].values[0].value
         # "/"+"author"
         except (IndexError, KeyError, AttributeError):
             pass
-        except Exception, e:
+        except Exception as e:
             logging.debug("No author available")
             logging.exception(e)
     logging.debug("author " + author)
-    try:
-        author = slugify.slugify(author)
-    except TypeError:
-        pass
     return author
 
 
@@ -38,42 +33,35 @@ def get_album(metadata, file_full_path):
         text = metadata.exportPlaintext()
     except AttributeError:
         text = ""
+    text = str(text) if isinstance(text,list) else text
     if re.search(
-            u".*album.*", unicode(text), re.IGNORECASE
+            u".*album.*", text, re.IGNORECASE
     ):
         album = "album_"
         try:
-            album += unicode(
-                metadata._Metadata__data["album"].values[0].value)
+            album += metadata._Metadata__data["album"].values[0].value
         # "/"+"album"
         except (IndexError, KeyError, AttributeError):
             pass
-        except Exception, e:
+        except Exception as e:
             logging.debug("No album available")
             logging.exception(e)
     logging.debug("album " + album)
-    return slugify.slugify(album)
+    return album
 
 
 def get_camera(metadata, file_full_path):
     camera_model = ""
     try:
-        text = metadata.exportPlaintext()
-    except AttributeError:
-        text = ""
-    if re.search(
-            u".*camera.*", unicode(text), re.IGNORECASE
-    ):
-        camera_model = "camera_"
-        try:
-            camera_model += unicode(
-                metadata._Metadata__data["camera_model"].values[0].value)
-        # "/"+"camera"
-        except (IndexError, KeyError, AttributeError):
-            pass
-        except Exception, e:
-            logging.debug("No camera model available")
-            logging.exception(e)
+        if "Model" in metadata.EXIF_KEY:
+            camera_model = "camera_"
+            camera_model += metadata._Metadata__data["camera_model"].values[0].value
+    # "/"+"camera"
+    except (IndexError, KeyError, AttributeError):
+        pass
+    except Exception as e:
+        logging.debug("No camera model available")
+        logging.exception(e)
     logging.debug("camera " + camera_model)
     return camera_model
 
@@ -88,7 +76,7 @@ def get_whatsapp(metadata, file_full_path):
         logging.debug("whatsapp " + whatsapp_path)
     except (IndexError, KeyError, AttributeError):
         pass
-    except Exception, e:
+    except Exception as e:
         logging.exception(e)
     return whatsapp_path
 
@@ -99,13 +87,14 @@ def get_date(metadata, file_full_path):
         text = metadata.exportPlaintext()
     except AttributeError:
         text = ""
-    if re.search(u".*date.*", unicode(text), re.IGNORECASE):
+    text = str(text) if isinstance(text, list) else text
+    if re.search(u".*date.*", text, re.IGNORECASE):
         try:
             date_str = metadata._Metadata__data["creation_date"].values[0].value.strftime("%y_%m_%d")
-        except (KeyError, IndexError), e:
+        except (KeyError, IndexError) as e:
             try:
                 date_str = metadata._Metadata__data["last_modification"].values[0].value.strftime("%y_%m_%d")
-            except (KeyError, IndexError), e:
+            except (KeyError, IndexError) as e:
                 try:
                     logging.debug(
                         "key not found in metadata " + file_full_path + ":" + str(
@@ -115,13 +104,13 @@ def get_date(metadata, file_full_path):
                     logging.debug(text)
                 except (IndexError, KeyError, AttributeError):
                     pass
-                except Exception, e:
+                except Exception as e:
                     logging.exception(e)
     if date_str == "sinkDateNotfound":
         try:
             fname = file_full_path.split("/")[-1]
             date_from_fname = re.search(
-                u"[a-z]*.([0-9]{8}).*", unicode(fname), re.IGNORECASE
+                u"[a-z]*.([0-9]{8}).*", fname, re.IGNORECASE
             )
             if date_from_fname:
                 logging.debug("Trying to get date from filename")
@@ -129,7 +118,7 @@ def get_date(metadata, file_full_path):
                 month = int(date_from_fname.group(1)[4:6])
                 day = int(date_from_fname.group(1)[6:8])
                 date_str = datetime(year, month, day).strftime("%y_%m_%d")
-        except (IndexError, UnicodeDecodeError, ValueError), e:
+        except (IndexError, UnicodeDecodeError, ValueError) as e:
             pass
     logging.debug("date " + date_str)
     return date_str
@@ -152,7 +141,7 @@ def get_icon(metadata,  file_full_path):
                 icon_path = "Icons"
     except (IndexError, KeyError, AttributeError):
         pass
-    except Exception, e:
+    except Exception as e:
         logging.exception(e)
     return icon_path
 
@@ -176,5 +165,5 @@ def run_path_update(mime_type, metadata,  file_full_path, file_ordered_path):
                             file_ordered_path, path_update
                         )
         except TypeError:
-            file_ordered_path = os.path.join(file_ordered_path,"sinkNoPathUpdate")
+            file_ordered_path = os.path.join(file_ordered_path, "sinkNoPathUpdate")
     return file_ordered_path

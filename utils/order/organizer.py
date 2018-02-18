@@ -1,7 +1,7 @@
 import os
 import sh
 import sys
-from constants import WORK_DIR
+from config import WORK_DIR, SW_PROJECTS_OUTPUT
 from utils.order.meta_path_composer import run_path_update
 from utils.log import log
 from utils.order.index import Index
@@ -34,7 +34,7 @@ class Organizer:
                 log.info("Organizing childs of {0}".format(mfile))
                 if mfile.is_source_container():
                     log.debug("{0} is source".format(mfile.path))
-                    dump_dir_path = os.path.join(WORK_DIR, "projects")
+                    dump_dir_path = os.path.join(WORK_DIR, SW_PROJECTS_OUTPUT)
                     sh.mkdir("-p", dump_dir_path)
 
                     dump_dir_path = sh.mktemp(
@@ -72,23 +72,23 @@ class Organizer:
                     ordered_path = os.path.join(
                         ordered_path,
                         u"{0}_{1}".format(os.path.basename(destination_path),
-                                         os.path.basename(mfile.path.decode("utf8"))
+                                         os.path.basename(mfile.path)
                         )
                     )
-                    log.info(u"File {0} @ {1}".format(str(mfile).decode("utf8"),ordered_path))
+                    log.info(u"File {0} @ {1}".format(str(mfile),ordered_path))
                     sh.ln("-s", destination_path, ordered_path)
                 except sh.ErrorReturnCode_1:
                     pass
-                except sh.ErrorReturnCode,e:
+                except sh.ErrorReturnCode as e:
                     log.exception(e)
-        except Exception, e:
+        except Exception as e:
             log.error("Organizer error {0}".format(mfile.path))
             log.exception(e)
         finally:
             for loaded_mfile in loaded_mfiles:
                 try:
                     loaded_mfile.unload()
-                except Exception, e:
+                except Exception as  e:
                     log.error("Error unloading {0}".format(mfile.path))
                     log.exception(e)
             return True

@@ -44,17 +44,17 @@ class Compressed(Container):
             writer = Thread(target=write_newline_onpipe,args=[cmd_proc.stdin])
             writer.start()
 
-            stdout, stderr = cmd_proc.communicate(input="\r\n")
+            stdout, stderr = cmd_proc.communicate(input=bytes("\r\n",'utf8'))
             log.debug("PATOOL: {0} , {1}".format(stdout, stderr))
-            if cmd_proc.returncode == True:
+            if cmd_proc.returncode == 0:
                 return True
             else:
                 self.unload()
                 return False
-        except Exception, e:
+        except Exception as e:
             err_str = "Unable to unpack {0} @ ".format(self.path,self.output_path)
             log.error(err_str)
-            #log.exception(e)
+            log.exception(e)
             return False
 
     def unload(self):

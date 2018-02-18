@@ -1,14 +1,10 @@
 #!/usr/bin/python
-import os
 import sh
-from utils.log import log
-WORK_DIR="/srv/orderedfiles"
-INDEX_PATH = os.path.join(WORK_DIR, "index")
 
-HOSTNAME = sh.hostname().stdout.replace("\n", "")
+HOSTNAME = str(sh.hostname().stdout,'utf8').replace("\n", "")
 
 
-SOURCEFOLDER_CONTENTS=[
+SOURCEFOLDER_CONTENTS = [
     "^\.idea$",
     "^main.py$",
     "^manage.py$",
@@ -26,9 +22,4 @@ SOURCEFOLDER_CONTENTS=[
     "^Classes$",
     "^.*\.xcodeproj$"
 ]
-PROJECTNAMES=["int_net", "inet", "L2L3Forwarder", "Rehtse"]
 
-BANNED_MIMES = [
-    "application/java-archive",
-    "application/vnd.debian.binary-package"
-]
