@@ -91,8 +91,8 @@ class FileFactory:
             magic_str = self.MAGIC.id_buffer(raw)
             mime_str = self.MAGIC_MIME.id_buffer(raw)
         except IOError:
-            magic_str = "directory"
-            mime_str = ""
+            magic_str = self.MAGIC.id_filename(path)
+            mime_str = self.MAGIC_MIME.id_filename(path)
         #log.debug("{0} has magic : {1} ".format(path, magic_str))
         return magic_str, mime_str
 
