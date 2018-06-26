@@ -76,6 +76,7 @@ class FileFactory:
         "image/.*": Image,
         "text/.*" : Text,
         "video/.*": Video,
+        "inode/.*": None
     }
     MAGIC = magic.Magic(flags=magic.MAGIC_DEVICES)
     MAGIC_MIME = magic.Magic(flags=magic.MAGIC_MIME_TYPE)

@@ -21,7 +21,10 @@ class Organizer:
         for child in mfile.get_children():
             log.debug("Organizing child {1} of {0}".format(mfile, child))
             child_file = self.ffactory.create_file(child)
-            self.organize(child_file, False)
+            if child_file:
+                self.organize(child_file, False)
+            else:
+                logging.debug("Bypassed {}".format(child))
             #sys.stdout.flush()
 
     def organize(self, mfile, root_call=True):
