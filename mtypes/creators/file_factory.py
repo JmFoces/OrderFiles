@@ -103,7 +103,7 @@ class FileFactory:
         metadata = get_metadata(path)
 
         for regex, file_class in self.CONTAINER_TYPES_MAP.items():
-            if re.search(regex, magic_str, flags=re.IGNORECASE):
+            if file_class and re.search(regex, magic_str, flags=re.IGNORECASE) :
                 try:
                     file_obj = file_class(path, magic_str=magic_str, mime_type=mime_str, metadata=metadata, parent=parent)
                     break
@@ -113,7 +113,7 @@ class FileFactory:
 
         if not file_obj:
             for regex, file_class in self.MIME_TYPES_MAP.items():
-                if re.search(regex, mime_str, flags=re.IGNORECASE):
+                if file_class and re.search(regex, mime_str, flags=re.IGNORECASE):
                     try:
                         file_obj = file_class(path, magic_str=magic_str, mime_type=mime_str, metadata=metadata, parent=parent)
                         break
