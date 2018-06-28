@@ -1,7 +1,10 @@
 import os
+
+import re
 import sh
 import sys
-from config import WORK_DIR, SW_PROJECTS_OUTPUT
+import logging
+from config import WORK_DIR, SW_PROJECTS_OUTPUT, METAFPATHFILE
 from utils.order.meta_path_composer import run_path_update
 from utils.log import log
 from utils.order.index import Index
@@ -65,21 +68,23 @@ class Organizer:
                 destination_path = self.index.put_file(mfile.path)
                 try:
                     ordered_path = mfile.get_ordered_path()
-                    ordered_path = run_path_update(
+                    sh.mkdir("-p", ordered_path)
+                    fname = os.path.basename(mfile.path)
+                    """ordered_path = run_path_update(
                         mfile.mime_type,
                         mfile.metadata,
                         mfile.path,
                         ordered_path
-                    )
-                    sh.mkdir("-p",ordered_path)
-                    ordered_path = os.path.join(
-                        ordered_path,
-                        u"{0}_{1}".format(os.path.basename(destination_path),
-                                         os.path.basename(mfile.path)
-                        )
-                    )
-                    log.info(u"File {0} @ {1}".format(str(mfile),ordered_path))
-                    sh.ln("-s", destination_path, ordered_path)
+                    )"""
+                    for link in mfile.gen_ordered_paths():
+                        link = os.path.join(
+                            link,
+                            u"{0}{1}".format(os.path.basename(destination_path), re.search(r"(\..*)", fname)))
+                        metapath_file = open("{}{}".format(ordered_path, METAFPATHFILE),'a')
+                        metapath_file.write(mfile.path+"\n")
+                        metapath_file.close()
+                        log.info(u"File {0} @ {1}".format(str(mfile), ordered_path))
+                        sh.ln("-s", destination_path, link)
                 except sh.ErrorReturnCode_1:
                     pass
                 except sh.ErrorReturnCode as e:

@@ -42,6 +42,9 @@ class File:
         sh.mkdir("-p", ordered_folder)
         return ordered_folder
 
+    def gen_ordered_paths(self):
+        pass
+
     def __str__(self):
         return "File:{0}".format(self.path)
 

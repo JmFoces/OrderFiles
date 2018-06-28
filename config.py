@@ -10,3 +10,4 @@ BANNED_MIMES = [ ## Mimetype blacklist
     "application/java-archive",
     "application/vnd.debian.binary-package"
 ]
+METAFPATHFILE="metapath"

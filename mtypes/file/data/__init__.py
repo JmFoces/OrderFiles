@@ -1,3 +1,4 @@
+import os
 from mtypes.file import File
 from utils.log import log
 
@@ -18,3 +19,16 @@ class Data(File):
 
     def get_ordered_path(self):
         return File.get_ordered_path(self)
+
+    def gen_ordered_paths(self):
+        ordered_paths = []
+        for updater in self.META_PATH_GENERATORS:
+            path_update = updater(
+                self.metadata, self.path
+            )
+            if path_update:
+                file_ordered_path = os.path.join(
+                    self.get_ordered_path(), path_update,
+                )
+                ordered_paths.append(file_ordered_path)
+        return ordered_paths

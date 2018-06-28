@@ -145,13 +145,13 @@ def get_icon(metadata,  file_full_path):
         logging.exception(e)
     return icon_path
 
-
+# deprecated
 path_update_map = {
     "image/*": [get_camera, get_whatsapp, get_icon, get_date],
     "audio/*": [get_author, get_album]
 }
 
-
+# deprecated
 def run_path_update(mime_type, metadata,  file_full_path, file_ordered_path):
     for key_regex, path_updaters in path_update_map.items():
         try:
