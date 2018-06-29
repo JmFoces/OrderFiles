@@ -70,6 +70,7 @@ class Organizer:
                     ordered_path = mfile.get_ordered_path()
                     sh.mkdir("-p", ordered_path)
                     fname = os.path.basename(mfile.path)
+                    destination_fname = os.path.basename(destination_path)
                     """ordered_path = run_path_update(
                         mfile.mime_type,
                         mfile.metadata,
@@ -80,8 +81,8 @@ class Organizer:
                         extension =  re.search(r"(\..*)", fname).group(1)
                         link = os.path.join(
                             link,
-                            u"{0}{1}".format(os.path.basename(destination_path),extension))
-                        metapath_file = open("{}{}".format(ordered_path, METAFPATHFILE),'a')
+                            u"{0}{1}".format(destination_fname,extension))
+                        metapath_file = open("{}{}.{}".format(ordered_path, destination_fname, METAFPATHFILE),'a')
                         metapath_file.write(mfile.path+"\n")
                         metapath_file.close()
                         log.info(u"File {0} @ {1}".format(str(mfile), ordered_path))
