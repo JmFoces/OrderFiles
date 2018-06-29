@@ -78,10 +78,16 @@ class Organizer:
                         ordered_path
                     )"""
                     for link in mfile.gen_ordered_paths():
-                        extension =  re.search(r"(\..*)", fname).group(1)
-                        link = os.path.join(
-                            link,
-                            u"{0}{1}".format(destination_fname,extension))
+                        try:
+                            has_ext =  re.search(r"(\..*)", fname)
+                            extension = has_ext.group(1)
+                            link = os.path.join(
+                                link,
+                                u"{0}{1}".format(destination_fname, extension))
+                        except AttributeError:
+                            link = os.path.join(
+                                link,
+                                u"{0}".format(destination_fname))
                         metapath_file = open("{}{}.{}".format(ordered_path, destination_fname, METAFPATHFILE),'a')
                         metapath_file.write(mfile.path+"\n")
                         metapath_file.close()
