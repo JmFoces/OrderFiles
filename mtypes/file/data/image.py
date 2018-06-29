@@ -18,7 +18,7 @@ class Image(Data):
         return "Image:{0}".format(self.path)
 
     def get_ordered_path(self):
-        return Data.get_ordered_path(self)
+        return super().get_ordered_path()
 
     def gen_ordered_paths(self):
-        return Data.gen_ordered_paths(self)
+        return super().gen_ordered_paths()

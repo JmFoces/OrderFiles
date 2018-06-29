@@ -24,3 +24,9 @@ class Pointer(File):
 
     def __str__(self):
         return "Pointer:{0} --> {1}".format(self.path,self.ptr)
+
+    def get_ordered_path(self):
+        return super().get_ordered_path()
+
+    def gen_ordered_paths(self):
+        return super().gen_ordered_paths()

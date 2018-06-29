@@ -77,9 +77,10 @@ class Organizer:
                         ordered_path
                     )"""
                     for link in mfile.gen_ordered_paths():
+                        extension =  re.search(r"(\..*)", fname).group(1)
                         link = os.path.join(
                             link,
-                            u"{0}{1}".format(os.path.basename(destination_path), re.search(r"(\..*)", fname)))
+                            u"{0}{1}".format(os.path.basename(destination_path),extension))
                         metapath_file = open("{}{}".format(ordered_path, METAFPATHFILE),'a')
                         metapath_file.write(mfile.path+"\n")
                         metapath_file.close()

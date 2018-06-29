@@ -18,7 +18,7 @@ class Data(File):
         return "Data:{0}".format(self.path)
 
     def get_ordered_path(self):
-        return File.get_ordered_path(self)
+        return super().get_ordered_path()
 
     def gen_ordered_paths(self):
-        File.gen_ordered_paths(self)
+        return super().gen_ordered_paths()

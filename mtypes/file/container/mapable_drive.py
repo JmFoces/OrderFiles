@@ -94,5 +94,9 @@ class MapableDrive(Container):
         return "MapableDrive{0}".format(self.path)
 
     def get_ordered_path(self):
-        return Container.get_ordered_path(self)
+        return super().get_ordered_path()
+
+    def gen_ordered_paths(self):
+        return super().gen_ordered_paths()
+
 

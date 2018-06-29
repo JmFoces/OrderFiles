@@ -15,4 +15,7 @@ class Text(Data):
         return "Text:{0}".format(self.path)
 
     def get_ordered_path(self):
-        return Data.get_ordered_path(self)
+        return super().get_ordered_path()
+
+    def gen_ordered_paths(self):
+        return super().gen_ordered_paths()

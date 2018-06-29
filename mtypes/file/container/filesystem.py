@@ -175,4 +175,7 @@ class FileSystem(Container):
         return "Filesystem {0} mounted @ {1}".format(self.path, self.output_path)
 
     def get_ordered_path(self):
-        return Container.get_ordered_path(self)
+        return super().get_ordered_path()
+
+    def gen_ordered_paths(self):
+        return super().gen_ordered_paths()

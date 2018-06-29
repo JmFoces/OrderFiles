@@ -23,7 +23,11 @@ class Directory(Container):
         return True
 
     def get_ordered_path(self):
-        return Container.get_ordered_path(self)
+        return super().get_ordered_path()
+
+    def gen_ordered_paths(self):
+        return super().gen_ordered_paths()
+
 
     def is_source_container(self):
         children = self.get_children()
