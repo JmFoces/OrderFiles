@@ -10,7 +10,7 @@ def get_author(metadata,  file_full_path):
         text = metadata.exportPlaintext()
     except AttributeError:
         text = ""
-    if  text:
+    if text:
         text = str(text) if isinstance(text, list) else text
         if re.search(
                 u".*author.*", text, re.IGNORECASE
@@ -36,20 +36,23 @@ def get_album(metadata, file_full_path):
         text = metadata.exportPlaintext()
     except AttributeError:
         text = ""
-    text = str(text) if isinstance(text,list) else text
-    if re.search(
-            u".*album.*", text, re.IGNORECASE
-    ):
-        album = "album_"
-        try:
-            album += metadata._Metadata__data["album"].values[0].value
-        # "/"+"album"
-        except (IndexError, KeyError, AttributeError):
-            pass
-        except Exception as e:
-            logging.debug("No album available")
-            logging.exception(e)
-    logging.debug("album " + album)
+    if text:
+        text = str(text) if isinstance(text,list) else text
+        if re.search(
+                u".*album.*", text, re.IGNORECASE
+        ):
+            album = "album_"
+            try:
+                album += metadata._Metadata__data["album"].values[0].value
+            # "/"+"album"
+            except (IndexError, KeyError, AttributeError):
+                pass
+            except Exception as e:
+                logging.debug("No album available")
+                logging.exception(e)
+        logging.debug("album " + album)
+    else:
+        logging.error("Cannot get album from {}".format(text))
     return album
 
 
