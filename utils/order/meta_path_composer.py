@@ -10,20 +10,23 @@ def get_author(metadata,  file_full_path):
         text = metadata.exportPlaintext()
     except AttributeError:
         text = ""
-    text = str(text) if isinstance(text, list) else text
-    if re.search(
-            u".*author.*", text, re.IGNORECASE
-    ):
-        author = u"author_"
-        try:
-            author += metadata._Metadata__data["author"].values[0].value
-        # "/"+"author"
-        except (IndexError, KeyError, AttributeError):
-            pass
-        except Exception as e:
-            logging.debug("No author available")
-            logging.exception(e)
-    logging.debug("author " + author)
+    if  text:
+        text = str(text) if isinstance(text, list) else text
+        if re.search(
+                u".*author.*", text, re.IGNORECASE
+        ):
+            author = u"author_"
+            try:
+                author += metadata._Metadata__data["author"].values[0].value
+            # "/"+"author"
+            except (IndexError, KeyError, AttributeError):
+                pass
+            except Exception as e:
+                logging.debug("No author available")
+                logging.exception(e)
+        logging.debug("author " + author)
+    else:
+        logging.error("Cannot get author from {}".format(text))
     return author
 
 
