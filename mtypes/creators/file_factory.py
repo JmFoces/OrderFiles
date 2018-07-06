@@ -57,7 +57,8 @@ class FileFactory:
         'filesystem': FileSystem,
         "DOS/MBR boot sector": distinguish_dos_from_fs,
         "partition table": MapableDrive,
-        " lvm": MapableDrive
+        " lvm": MapableDrive,
+        "LVM2 PV .*": MapableDrive
     }
     MIME_TYPES_MAP = {
         ".*zip.*": Compressed,

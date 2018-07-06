@@ -46,6 +46,7 @@ class MapableDrive(Container):
 
     def unload(self):
         try:
+
             if self.lodev:
                 sh.losetup("-d", self.lodev)
             try:
