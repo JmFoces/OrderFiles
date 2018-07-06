@@ -10,7 +10,7 @@ class Container(File):
     # Represents a container. Anything that may have embed files (rar,tgz,ext4...)
     META_PATH_GENERATORS = []
     def __init__(self, path, magic_str=None, mime_type=None, metadata=None,parent=None):
-        File.__init__(self, path, magic_str, metadata,mime_type)
+        File.__init__(self, path=path, magic_str=magic_str, metadata=metadata,mime_type=mime_type,parent=parent)
         log.debug("Created Container File {0}".format(self.path))
         self.output_path = None
         self.loaded = False
