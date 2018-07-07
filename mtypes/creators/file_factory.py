@@ -1,5 +1,8 @@
+import stat
+
 import hachoir
 import magic
+import os
 import sh
 import re
 
@@ -103,6 +106,9 @@ class FileFactory:
 
     def create_file(self, path, parent=None):
         file_obj = None
+        if stat.S_ISFIFO(os.stat(path).st_mode):
+            return None
+
         magic_str, mime_str = self.get_file_magic(path)
         metadata = get_metadata(path)
 

@@ -22,7 +22,7 @@ if __name__ == "__main__":
     procs = []
     for param in sys.argv[1:]:
         try:
-            if param not in EXCLUDE_ROOT :
+            if param not in EXCLUDE_ROOT:
                 if os.path.isdir(param):
                     for subdir in listdir(param):
                         if subdir not in EXCLUDE_ROOT:

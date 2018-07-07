@@ -25,7 +25,7 @@ class LVM(MapableDrive):
         self.vgname = sh.pvdisplay(self.path, "-C").stdout
         self.vgname = self.vgname.split(b"\n")[1].split(b" ")[4]
         self.vgname = str(self.vgname,'utf8')
-        sh.vgchange("-ay",self.vgname)
+        sh.vgchange("-ay", self.vgname)
         return super(LVM, self).load()
 
     def unload(self):
