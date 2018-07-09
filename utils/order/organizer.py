@@ -79,7 +79,7 @@ class Organizer:
                     )"""
                     for link in mfile.gen_ordered_paths():
                         try:
-                            has_ext =  re.search(r"(\..*)", fname)
+                            has_ext = re.search(r"(\..*)", fname)
                             extension = has_ext.group(1)
                             link = os.path.join(
                                 link,

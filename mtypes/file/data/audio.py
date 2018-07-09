@@ -7,11 +7,11 @@ from utils.order.meta_path_composer import get_author, get_album
 
 class Audio(Data):
 
-    META_PATH_GENERATORS = [get_author, get_album]
+
 
     def __init__(self, path, magic_str=None, mime_type=None, metadata=None, parent=None):
         Data.__init__(self, path, magic_str, mime_type, metadata, parent)
-
+        self.META_PATH_GENERATORS = [get_author, get_album]
         #log.debug("Created Data File {0}".format(self.path))
 
     def get_children(self):
