@@ -4,7 +4,6 @@ from utils.order.meta_path_composer import get_camera, get_whatsapp, get_icon, g
 
 
 class Image(Data):
-    # Represents a file that does not contain embed files.
 
     def __init__(self, path, magic_str=None, mime_type=None, metadata=None, parent=None):
         Data.__init__(self, path, magic_str, mime_type, metadata, parent)
