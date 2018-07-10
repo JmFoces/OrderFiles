@@ -68,7 +68,7 @@ class Organizer:
                 destination_path = self.index.put_file(mfile.path)
                 try:
                     ordered_path = mfile.get_ordered_path()
-                    sh.mkdir("-p", ordered_path)
+                    sh.mkdir("-p", os.path.join(ordered_path,'NoMeta'))
                     fname = os.path.basename(mfile.path)
                     destination_fname = os.path.basename(destination_path)
                     """ordered_path = run_path_update(
