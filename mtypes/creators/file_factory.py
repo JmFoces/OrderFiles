@@ -106,7 +106,8 @@ class FileFactory:
 
     def create_file(self, path, parent=None):
         file_obj = None
-        if stat.S_ISFIFO(os.stat(path).st_mode):
+        #if stat.S_ISFIFO(os.stat(path).st_mode) or stat.S_ISCHR(os.stat(path).st_mod):
+        if stat.S_ISFIFO(os.stat(path).st_mode) or stat.S_ISCHR(os.stat(path).st_mod):
             return None
 
         magic_str, mime_str = self.get_file_magic(path)
