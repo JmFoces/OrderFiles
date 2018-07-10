@@ -88,10 +88,11 @@ class Organizer:
                             link = os.path.join(
                                 link,
                                 u"{0}".format(destination_fname))
-                        metapath_file = open(os.path.join(ordered_path,"{}.{}".format(destination_fname, METAFPATHFILE)),'a')
+                        metapath_file = open(os.path.join(ordered_path, "{}.{}".format(destination_fname, METAFPATHFILE)),'a')
                         metapath_file.write(mfile.path+"\n")
                         metapath_file.close()
                         log.info(u"File {0} @ {1}".format(str(mfile), ordered_path))
+                        sh.mkdir("-p",link)
                         sh.ln("-s", destination_path, link)
                 except sh.ErrorReturnCode_1:
                     pass
