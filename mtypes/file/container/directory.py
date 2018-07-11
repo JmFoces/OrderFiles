@@ -10,7 +10,7 @@ class Directory(Container):
 
     # Represents a directory container
     def __init__(self, path, magic_str=None, mime_type=None, metadata=None, parent=None):
-        Container.__init__(self, path, magic_str, mime_type, metadata, parent)
+        Container.__init__(self, path, magic_str=magic_str, mime_type=mime_type, metadata=metadata, parent=parent)
         #log.debug("Created Directory Container File {0}".format(self.path))
 
     def __str__(self):

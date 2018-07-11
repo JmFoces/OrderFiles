@@ -5,7 +5,7 @@ from utils.log import log
 class Document(Data):
 
     def __init__(self, path, magic_str=None, mime_type=None, metadata=None, parent=None):
-        Data.__init__(self, path, magic_str, mime_type, metadata, parent)
+        Data.__init__(self, path, magic_str=magic_str, mime_type=mime_type, metadata=metadata, parent=parent)
         #log.debug("Created Data File {0}".format(self.path))
 
     def get_children(self):

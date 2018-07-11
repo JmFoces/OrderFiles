@@ -14,6 +14,7 @@ from utils.order.organizer import Organizer
 from hachoir.core import config
 config.quiet = True
 
+
 def work(path):
     ffactory = FileFactory()
     organizer = Organizer()

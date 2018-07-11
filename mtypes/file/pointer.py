@@ -7,8 +7,8 @@ import sh
 class Pointer(File):
     # Represents a symbolic link
 
-    def __init__(self, path, magic_str=None, mime_type=None,parent=None):
-        File.__init__(self, path=path, magic_str=magic_str, mime_type=magic_str,parent=magic_str)
+    def __init__(self, path, magic_str=None, mime_type=None,  metadata=None, parent=None):
+        File.__init__(self, magic_str=magic_str, mime_type=mime_type, metadata=metadata, parent=parent)
         retcode, stdout, stderr = launch_command("readlink -e {0}".format(self.path))
         self.ptr = stdout.strip()
         if "proc/self" in self.ptr or "dev/pts" in self.ptr:

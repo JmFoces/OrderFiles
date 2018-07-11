@@ -15,7 +15,7 @@ class File:
         self.mime_type = mime_type
         self.path = path
         self.metadata = metadata
-        self.parent=None
+        self.parent=parent
         #log.debug("Created File {0}".format(self.path))
 
     def get_children(self):

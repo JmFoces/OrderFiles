@@ -6,7 +6,7 @@ from utils.order.meta_path_composer import get_camera, get_whatsapp, get_icon, g
 class Image(Data):
 
     def __init__(self, path, magic_str=None, mime_type=None, metadata=None, parent=None):
-        Data.__init__(self, path, magic_str, mime_type, metadata, parent)
+        Data.__init__(self, path, magic_str=magic_str, mime_type=mime_type, metadata=metadata, parent=parent)
         self.META_PATH_GENERATORS = [get_camera, get_whatsapp, get_icon, get_date]
 
     def get_children(self):

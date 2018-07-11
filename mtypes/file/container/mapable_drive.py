@@ -15,7 +15,7 @@ class MapableDrive(Container):
     RECURSION_STOP_MSG = "Mappable drive End Recursion condition reached"
 
     def __init__(self, path, magic_str=None, mime_type=None, metadata=None,parent=None):
-        Container.__init__(self, path, magic_str, mime_type, metadata, parent)
+        Container.__init__(self, path, magic_str=magic_str, mime_type=mime_type, metadata=metadata, parent=parent)
         self.lodev = None
         self.children = set()
         log.debug("Created Mapable Drive Container File {0}".format(self.path))

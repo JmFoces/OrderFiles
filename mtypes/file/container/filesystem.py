@@ -27,7 +27,7 @@ class FileSystem(Container):
     LSBLK_KEYS = "FSTYPE,UUID,LABEL"
 
     def __init__(self, path, magic_str=None, mime_type=None, metadata=None,parent=None):
-        Container.__init__(self, path, magic_str, mime_type, metadata, parent)
+        Container.__init__(self, path, magic_str=magic_str, mime_type=mime_type, metadata=metadata, parent=parent)
         attempt = 0
         self.fstype = None
         self.label = None
