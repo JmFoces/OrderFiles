@@ -30,22 +30,13 @@ def worker_loop():
 
 
 if __name__ == "__main__":
-    procs = []
-
-    for i in range(0, multiprocessing.cpu_count()):
-        p = Process(target=worker_loop)
-        procs.append(p)
 
     for param in sys.argv[1:]:
         try:
-            work_queue.put(param)
+            p = Process(target=work, args=(param,))
+            p.start()
+            p.join()
         except Exception as e:
             log.exception(e)
 
-    for p in procs:
-        p.start()
-
-    work_queue.join()
-    for p in procs:
-        p.terminate()
     log.info("Finished all tasks")
