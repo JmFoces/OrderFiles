@@ -46,4 +46,6 @@ if __name__ == "__main__":
         p.start()
 
     work_queue.join()
+    for p in procs:
+        p.terminate()
     log.info("Finished all tasks")
