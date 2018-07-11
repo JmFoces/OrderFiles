@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     for param in sys.argv[1:]:
         try:
-            result_list.append(ppool.apply_async(work, [param]))
+            result_list.append(ppool.apply_async(work, args=(param)))
         except Exception as e:
             log.exception(e)
 
