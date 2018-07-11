@@ -18,16 +18,21 @@ def work(path):
     mfile = ffactory.create_file(path)
     organizer.organize(mfile)
     log.info("Finished {}".format(path))
-
+    return path
 
 if __name__ == "__main__":
     ppool = Pool()
+    result_list = []
 
     for param in sys.argv[1:]:
         try:
-            ppool.apply_async(work, (param))
+            result_list.append(ppool.apply_async(work, (param)))
         except Exception as e:
             log.exception(e)
+
+    for result in result_list:
+        log.info("Finished  {}".format(result.get()))
+
     ppool.close()
     ppool.join()
     log.info("Finished all tasks")
