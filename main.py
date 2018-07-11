@@ -28,6 +28,6 @@ if __name__ == "__main__":
             ppool.apply_async(work, (param))
         except Exception as e:
             log.exception(e)
-
+    ppool.close()
     ppool.join()
     log.info("Finished all tasks")
