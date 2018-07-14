@@ -66,6 +66,7 @@ class FileFactory:
     MIME_TYPES_MAP = {
         ".*zip.*": Compressed,
         ".*zlib": Compressed,
+        "application/x-iso9660-image": Data,
         "application/x-tar": Compressed,
         "application/x-rar": Compressed,
         "application/x-lzma": Compressed,
