@@ -49,19 +49,21 @@ class Index:
 
     def create_destination_folder(self, hash_str):
         count = 0
+        step = 2
         path = self.INDEX_PATH
         while count < self.DEPTH:
             path = os.path.join(path, hash_str[count:count+2])
             sh.mkdir("-p", path)
-            count += 1
+            step += 2
         return path
 
     def is_stored(self, hash_str):
         count = 0
+        step = 2
         path = self.INDEX_PATH
         while count < self.DEPTH:
             path = os.path.join(path, hash_str[count:count + 2])
-            count += 1
+            step += 2
         path = os.path.join(path, hash_str)
         return os.path.exists(path)
 

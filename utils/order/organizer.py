@@ -78,6 +78,7 @@ class Organizer:
                         ordered_path
                     )"""
                     for link in mfile.gen_ordered_paths():
+                        sh.mkdir("-p", link)
                         try:
                             has_ext = re.search(r"(\..*)", fname)
                             extension = has_ext.group(1)
@@ -92,7 +93,6 @@ class Organizer:
                         metapath_file.write(mfile.path+"\n")
                         metapath_file.close()
                         log.info(u"File {0} @ {1}".format(str(mfile), ordered_path))
-                        sh.mkdir("-p",link)
                         sh.ln("-s", destination_path, link)
                 except sh.ErrorReturnCode_1:
                     pass
