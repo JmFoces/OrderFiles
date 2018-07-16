@@ -1,23 +1,12 @@
 
-import os
+
 import sh
-from utils.exceptions import UnableToLoad
-import patoolib
 from mtypes.file.container import Container
 from utils.log import log
 from subprocess import Popen
 import subprocess
 import time
-from threading import Thread
-
-def write_newline_onpipe(pipe):
-    try:
-        for i in range(0, 20):
-            pipe.write("\r\n")
-            pipe.flush()
-            time.sleep(0.25)
-    except:
-        pass
+import pexpect
 
 
 class Compressed(Container):
@@ -34,19 +23,16 @@ class Compressed(Container):
             #patoolib.extract_archive(self.path, outdir=self.output_path, interactive=False)
             #p = Process(target=patoolib.extract_archive,kwargs={"archive":self.path, "outdir":self.output_path, "interactive":False})
             command="patool --non-interactive extract --outdir {0} {1}".format(self.output_path, self.path)
-            cmd_proc = Popen(command,
-                             shell=True,
-                             stdin=subprocess.PIPE,
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,
-                             executable="/bin/bash"
-                             )
-            writer = Thread(target=write_newline_onpipe,args=[cmd_proc.stdin])
-            writer.start()
+            child = pexpect.spawn(command)
+            while True:
+                #stdout, stderr = cmd_proc.communicate(input=bytes("\n", 'utf8'), timeout=10)
+                child.sendline("")
+                if child.isalive():
+                    time.sleep(1)
+                else:
+                    break
 
-            stdout, stderr = cmd_proc.communicate(input=bytes("\r\n",'utf8'))
-            log.debug("PATOOL: {0} , {1}".format(stdout, stderr))
-            if cmd_proc.returncode == 0:
+            if child.exitstatus == 0:
                 return True
             else:
                 self.unload()
