@@ -45,7 +45,7 @@ class File:
 
     def gen_ordered_paths(self):
         ordered_paths = []
-        ordered_paths.append(self.get_ordered_path())
+        #ordered_paths.append(self.get_ordered_path())
         for updater in self.META_PATH_GENERATORS:
             log.debug("Meta-Path-Updater: {}".format(updater))
             path_update = updater(
