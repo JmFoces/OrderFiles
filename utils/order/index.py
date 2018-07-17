@@ -15,6 +15,7 @@ class Index:
     def __init__(self):
         self.tmp = os.path.join(self.INDEX_PATH, "tmp")
         sh.mkdir("-p", self.tmp)
+        self.step = 2
 
     def put_file(self, path):
         temp_file = str(sh.mktemp("-p", self.tmp).stdout,'utf8').strip()
@@ -49,21 +50,21 @@ class Index:
 
     def create_destination_folder(self, hash_str):
         count = 0
-        step = 2
+
         path = self.INDEX_PATH
         while count < self.DEPTH:
-            path = os.path.join(path, hash_str[count:count+2])
+            path = os.path.join(path, hash_str[count:count+self.step])
             sh.mkdir("-p", path)
-            step += 2
+            count += self.step
         return path
 
     def is_stored(self, hash_str):
         count = 0
-        step = 2
+
         path = self.INDEX_PATH
         while count < self.DEPTH:
-            path = os.path.join(path, hash_str[count:count + 2])
-            step += 2
+            path = os.path.join(path, hash_str[count:count + self.step])
+            count += self.step
         path = os.path.join(path, hash_str)
         return os.path.exists(path)
 
