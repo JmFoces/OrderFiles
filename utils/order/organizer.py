@@ -78,7 +78,7 @@ class Organizer:
                         ordered_path
                     )"""
                     for link in mfile.gen_ordered_paths():
-                        sh.mkdir("-p", link)
+                        #sh.mkdir("-p", link)
                         try:
                             has_ext = re.search(r"(\..*)", fname)
                             extension = has_ext.group(1)
