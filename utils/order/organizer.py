@@ -66,17 +66,14 @@ class Organizer:
                     p.join()
             else:
                 destination_path = self.index.put_file(mfile.path)
+                metapath_file = open("{}.{}".format(destination_path, METAFPATHFILE), 'a')
+                metapath_file.write(mfile.path + "\n")
+                metapath_file.close()
                 try:
                     ordered_path = mfile.get_ordered_path()
                     sh.mkdir("-p", os.path.join(ordered_path,'NoMeta'))
                     fname = os.path.basename(mfile.path)
                     destination_fname = os.path.basename(destination_path)
-                    """ordered_path = run_path_update(
-                        mfile.mime_type,
-                        mfile.metadata,
-                        mfile.path,
-                        ordered_path
-                    )"""
                     for link in mfile.gen_ordered_paths():
                         log.debug("{} to {}".format(mfile.path,link))
                         sh.mkdir("-p", link)
@@ -90,9 +87,6 @@ class Organizer:
                             link = os.path.join(
                                 link,
                                 u"{0}".format(destination_fname))
-                        metapath_file = open(os.path.join(ordered_path, "{}.{}".format(destination_fname, METAFPATHFILE)),'a')
-                        metapath_file.write(mfile.path+"\n")
-                        metapath_file.close()
                         log.info(u"File {0} @ {1}".format(str(mfile), ordered_path))
                         sh.ln("-s", destination_path, link)
                 except sh.ErrorReturnCode_1:
