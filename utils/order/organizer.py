@@ -67,7 +67,7 @@ class Organizer:
             else:
                 destination_path = self.index.put_file(mfile.path)
                 metapath_file = open("{}.{}".format(destination_path, METAFPATHFILE), 'ab')
-                metapath_file.write(bytes(mfile.path + b"\n", 'utf8'))
+                metapath_file.write(bytes(mfile.path + "\n", 'utf8'))
                 metapath_file.close()
                 try:
                     ordered_path = mfile.get_ordered_path()
